@@ -1,20 +1,35 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
 
-export default function App() {
+//import { HelloWave } from '@/components/hello-wave';
+//import ParallaxScrollView from '@/components/parallax-scroll-view';
+//import { ThemedText } from '@/components/themed-text';
+//import { ThemedView } from '@/components/themed-view';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Details from '../app/LoginScreens/Details';
+import List from '../app/LoginScreens/List';
+import Login from '../app/LoginScreens/Login';
+
+const Stack = createNativeStackNavigator();
+
+const InsideStack = createNativeStackNavigator();
+
+function InsideLayout() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <InsideStack.Navigator initialRouteName="Login">
+      <InsideStack.Screen name="My todos" component={List} />
+      <InsideStack.Screen name="details" component={Details} />
+
+    </InsideStack.Navigator>
   );
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+export default function HomeScreen() {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator initialRouteName="Login">
+        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+

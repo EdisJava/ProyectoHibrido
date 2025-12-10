@@ -4,12 +4,13 @@ import { Colors } from '@/constants/theme';
 import { useColorScheme } from '@/hooks/use-color-scheme';
 import { Tabs } from 'expo-router';
 import React from 'react';
+import { Platform } from 'react-native';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
 
   return (
-       <Tabs
+    <Tabs
       screenOptions={{
         tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
         headerShown: false,
@@ -23,20 +24,25 @@ export default function TabLayout() {
         }}
       />
 
-      <Tabs.Screen
-        name="firebase"
-        options={{
-          title: 'Restaurante',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
-      <Tabs.Screen
-        name="pedidos"
-        options={{
-          title: 'Pedidos',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
-        }}
-      />
+      {Platform.OS === 'android' && (
+        <Tabs.Screen
+          name="pedidos"
+          options={{
+            title: 'Pedidos',
+            tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          }}
+        />
+      )}
+
+      {Platform.OS === 'web' && (
+        <Tabs.Screen
+          name="pedidosweb"
+          options={{
+            title: 'Pedidos Web',
+            tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          }}
+        />
+      )}
     </Tabs>
   );
 }
