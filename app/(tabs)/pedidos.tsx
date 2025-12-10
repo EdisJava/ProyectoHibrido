@@ -1,73 +1,115 @@
-import { Image } from 'expo-image';
-import { StyleSheet, View, } from 'react-native';
+import React, { useState } from 'react';
+import { Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
+import RNPickerSelect from 'react-native-picker-select';
 
-import { HelloWave } from '@/components/hello-wave';
-import ParallaxScrollView from '@/components/parallax-scroll-view';
-import { ThemedText } from '@/components/themed-text';
-import { ThemedView } from '@/components/themed-view';
-import React from 'react';
-import MapView from 'react-native-maps';
-
-const [origin, setOrigin] = React.useState({
-    latitude: 37.25,
-    longitude: -12.44,
-
-      });
 export default function HomeScreen() {
+  const [name, setName] = useState('');
+  const [dropdown1, setDropdown1] = useState('');
+  const [dropdown2, setDropdown2] = useState('');
+
+  const handleOrder = () => {
+    console.log(`Nombre: ${name}, Opción 1: ${dropdown1}, Opción 2: ${dropdown2}`);
+  };
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/ismael.jpg')}
-          style={styles.reactLogo}
+    <View style={styles.screen}> {/* Usando el estilo de fondo */}
+      <Image source={require("../../assets/images/rocketlogo.png")} style={styles.logo} /> {/* Añadido el logo */}
+      <View style={styles.formContainer}>
+        <Text style={styles.label}>Nombre:</Text>
+        <TextInput
+          style={styles.input}
+          placeholder="Escribe tu nombre"
+          value={name}
+          onChangeText={setName}
         />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">PEDIDOS</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Tardanza del pedido</ThemedText>
-      </ThemedView>
-      
 
+        <Text style={styles.label}>Desplegable 1:</Text>
+        <RNPickerSelect
+          onValueChange={(value) => setDropdown1(value)}
+          items={[
+            { label: 'Opción 1', value: 'opcion1' },
+            { label: 'Opción 2', value: 'opcion2' },
+          ]}
+          style={pickerStyles}
+        />
 
-      <View style={styles.container}>
-        <MapView style={styles.map} />
+        <Text style={styles.label}>Desplegable 2:</Text>
+        <RNPickerSelect
+          onValueChange={(value) => setDropdown2(value)}
+          items={[
+            { label: 'Opción A', value: 'opcionA' },
+            { label: 'Opción B', value: 'opcionB' },
+          ]}
+          style={pickerStyles}
+        />
+
+        <View style={styles.buttonContainer}>
+          <Button title="Pedir" onPress={handleOrder} />
+        </View>
       </View>
+    </View>
+  );}
 
-
-    </ParallaxScrollView>
-    
-  );
-}
+const pickerStyles = {
+  inputIOS: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  inputAndroid: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  placeholder: {
+    color: '#999',
+  },
+};
 
 const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
+  screen: {
+    flex: 1,
+    justifyContent: 'center', 
+    alignItems: 'center', 
+    backgroundColor: '#ffecb9', //usar este color para todos los fondos 
+    padding: 20,
   },
-
-    container: {
-    height: 400,
+  logo: {
+    width: 250, 
+    height: 250,
+    marginBottom: 30, // Añadido espaciado debajo del logo
+  },
+  formContainer: {
     width: '100%',
-    justifyContent: 'center',
     alignItems: 'center',
-    },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
   },
-    map: {
-    ...StyleSheet.absoluteFillObject,
-    },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
+  label: {
+    fontSize: 16,
+    marginBottom: 10,
+    alignSelf: 'flex-start', // Asegura que el texto esté alineado a la izquierda
+    marginLeft: 20, // Espaciado desde el borde izquierdo
+  },
+  input: {
+    height: 40,
+    borderColor: '#ccc',
+    borderWidth: 1,
+    borderRadius: 5,
+    marginBottom: 20,
+    paddingHorizontal: 10,
+    width: '90%',
+  },
+  picker: {
+    marginBottom: 20,
+    width: '90%',
+  },
+  buttonContainer: {
+    marginTop: 20,
+    width: '90%',
   },
 });

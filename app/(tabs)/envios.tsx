@@ -70,12 +70,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center', 
     alignItems: 'center', 
     backgroundColor: '#ffecb9', //usar este color para todos los fondos 
+    padding: 20,
   },
   logo: {
     width: 250, 
     height: 250,
-    position: 'absolute', 
-    top: 50, 
+    marginBottom: 30, // Añadido espaciado debajo del logo
   },
   text: {
     marginBottom: 50,
@@ -86,8 +86,8 @@ const styles = StyleSheet.create({
     width: '80%', 
     borderRadius: 10,
     overflow: 'hidden',
+    marginBottom: 20, // Añadido espaciado debajo de la barra de progreso
   },
-
   progressBar: {
     height: '100%',
     backgroundColor: '#3b5998',
@@ -103,6 +103,7 @@ const styles = StyleSheet.create({
   },
   starsContainer: {
     flexDirection: 'row',
+    marginBottom: 20, // Añadido espaciado debajo de las estrellas
   },
   star: {
     fontSize: 30,
