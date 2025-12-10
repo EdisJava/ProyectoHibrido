@@ -1,12 +1,11 @@
 import { Image } from 'expo-image';
-import { StyleSheet, View, } from 'react-native';
+import { StyleSheet } from 'react-native';
 
 import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
 import React from 'react';
-import MapView from 'react-native-maps';
 
 const [origin, setOrigin] = React.useState({
     latitude: 37.25,
@@ -30,12 +29,7 @@ export default function HomeScreen() {
       <ThemedView style={styles.stepContainer}>
         <ThemedText type="subtitle">Tardanza del pedido</ThemedText>
       </ThemedView>
-      
-
-
-      <View style={styles.container}>
-        <MapView style={styles.map} />
-      </View>
+    
 
 
     </ParallaxScrollView>
