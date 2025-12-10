@@ -52,48 +52,52 @@ export default function HomeScreen() {
 
 const pickerStyles = {
   inputIOS: {
-    height: 40,
+    height: 55, // Incrementado para evitar cortes verticales
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 30, // Incrementado para evitar cortes horizontales
+    color: '#333',
+    fontSize: 10, // Reducido para adaptarse mejor
   },
   inputAndroid: {
-    height: 40,
+    height: 55, // Incrementado para evitar cortes verticales
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 20,
-    paddingHorizontal: 10,
-  },
-  placeholder: {
-    color: '#999',
+    paddingHorizontal: 30, // Incrementado para evitar cortes horizontales
+    color: '#333',
+    fontSize: 10, // Reducido para adaptarse mejor
   },
 };
 
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
-    justifyContent: 'center', 
-    alignItems: 'center', 
-    backgroundColor: '#ffecb9', //usar este color para todos los fondos 
-    padding: 20,
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    backgroundColor: '#ffecb9',
+    paddingVertical: 40,
   },
   logo: {
-    width: 250, 
+    width: 250,
     height: 250,
-    marginBottom: 30, // Añadido espaciado debajo del logo
+    marginBottom: 10,
   },
   formContainer: {
     width: '100%',
+    flex: 1, // Permitir que el contenedor ocupe más espacio vertical
+    justifyContent: 'space-evenly', // Distribuir los elementos uniformemente
     alignItems: 'center',
+    paddingVertical: 20, // Añadir espacio interno
   },
   label: {
     fontSize: 16,
     marginBottom: 10,
-    alignSelf: 'flex-start', // Asegura que el texto esté alineado a la izquierda
-    marginLeft: 20, // Espaciado desde el borde izquierdo
+    alignSelf: 'flex-start',
+    marginLeft: 20,
   },
   input: {
     height: 40,
