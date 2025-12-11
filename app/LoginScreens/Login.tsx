@@ -76,7 +76,7 @@ const Login = () => {
                     placeholder='Email' 
                     autoCapitalize='none'
                     editable={!loading}
-                    onChangeText={(text) => setEmail(text)}
+                    onChangeText={(text: string) => setEmail(text)}
                 />
                 <TextInput 
                     secureTextEntry={true} 
@@ -85,7 +85,7 @@ const Login = () => {
                     placeholder='Contraseña' 
                     autoCapitalize='none'
                     editable={!loading}
-                    onChangeText={(text) => setPassword(text)}
+                    onChangeText={(text: string) => setPassword(text)}
                 />
                 {loading ? 
                     <ActivityIndicator size="large" color="#0000ff" /> 

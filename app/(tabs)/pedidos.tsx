@@ -5,20 +5,15 @@ import { HelloWave } from '@/components/hello-wave';
 import ParallaxScrollView from '@/components/parallax-scroll-view';
 import { ThemedText } from '@/components/themed-text';
 import { ThemedView } from '@/components/themed-view';
-import React from 'react';
 
-const [origin, setOrigin] = React.useState({
-    latitude: 37.25,
-    longitude: -12.44,
 
-      });
 export default function HomeScreen() {
   return (
     <ParallaxScrollView
       headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
       headerImage={
         <Image
-          source={require('@/assets/images/ismael.jpg')}
+          source={require('@/assets/images/ropopo.jpg')}
           style={styles.reactLogo}
         />
       }>
@@ -58,8 +53,8 @@ const styles = StyleSheet.create({
     ...StyleSheet.absoluteFillObject,
     },
   reactLogo: {
-    height: 178,
-    width: 290,
+    height: 200,
+    width: 600,
     bottom: 0,
     left: 0,
     position: 'absolute',
