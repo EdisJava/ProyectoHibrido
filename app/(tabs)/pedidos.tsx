@@ -79,10 +79,12 @@ export default function HomeScreen() {
     if (restaurant) {
       router.push({
         pathname: '/envios',
-        params: { time: restaurant.time.toString() }
+        params: { time: restaurant.time.toString(), name },
       });
     }
   };
+
+  
 
   return (
     <View style={styles.screen}> {/* Usando el estilo de fondo */}

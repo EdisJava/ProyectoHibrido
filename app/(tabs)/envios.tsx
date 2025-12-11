@@ -14,12 +14,12 @@ export default function TabTwoScreen() {
   const [countdown, setCountdown] = useState(0); // Contador regresivo en segundos
   const time = params.time ? Number(params.time) : 30; // Recibe time y convierte a número
   const deliveryTimeMs = time * 1000; // Convierte segundos a milisegundos
-
+  const name = params.name;
   useEffect(() => {
     // Reiniciar el progreso a 0
     progress.setValue(0);
     setInternalProgress(0);
-    setMessage("Su pedido está en camino");
+    setMessage("Su pedido está en camino "+name);
     setShowRating(false);
     setCountdown(time); // Iniciar el contador regresivo
 
