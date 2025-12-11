@@ -1,19 +1,92 @@
-import React, { useState } from 'react';
+import { router } from 'expo-router';
+import { collection, getDocs } from 'firebase/firestore';
+import React, { useEffect, useState } from 'react';
 import { Button, Image, StyleSheet, Text, TextInput, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
+import { FIRESTORE_DB } from '../../FIrebaseConf';
+
+interface Restaurant {
+  label: string;
+  value: string;
+  id: string;
+  time: number;
+}
+
+interface Dish {
+  label: string;
+  value: string;
+}
 
 export default function HomeScreen() {
   const [name, setName] = useState('');
-  const [dropdown1, setDropdown1] = useState('');
-  const [dropdown2, setDropdown2] = useState('');
+  const [restaurants, setRestaurants] = useState<Restaurant[]>([]);
+  const [selectedRestaurant, setSelectedRestaurant] = useState<string | null>(null);
+  const [dishes, setDishes] = useState<Dish[]>([]);
+  const [selectedDish, setSelectedDish] = useState<string | null>(null);
+
+
+  useEffect(() => {
+    const fetchRestaurants = async () => {
+      const querySnapshot = await getDocs(collection(FIRESTORE_DB, 'Restaurant'));
+      const fetchedRestaurants: Restaurant[] = querySnapshot.docs.map(doc => ({
+        label: doc.data().Nombre, // Cambiado a 'Nombre'
+        value: doc.id,
+        id: doc.data().Id_restaurante || doc.data().Id_restaurante, // ID numérico del restaurante
+        time: doc.data().tiempo, // Tiempo asociado al restaurante
+      }));
+      setRestaurants(fetchedRestaurants);
+    };
+    fetchRestaurants();
+  }, []);
+
+
+  useEffect(() => {
+    if (selectedRestaurant) {
+      const fetchDishes = async () => {
+        const querySnapshot = await getDocs(collection(FIRESTORE_DB, 'Platos'));
+
+        // Obtener el ID numérico del restaurante seleccionado
+        const selectedRestaurantData = restaurants.find(r => r.value === selectedRestaurant);
+        const restaurantId = selectedRestaurantData?.id;
+
+        const fetchedDishes: Dish[] = querySnapshot.docs
+          .filter(doc => {
+            const data = doc.data();
+            // Handle both capitalization variants in Firestore
+            const idRestaurante = data.id_restaurante || data.Id_restaurante;
+            return idRestaurante === restaurantId;
+          })
+          .map(doc => ({
+            label: doc.data().Nombre || doc.data().nombre,
+            value: doc.id,
+          }));
+
+        setDishes(fetchedDishes);
+      };
+      fetchDishes();
+    } else {
+      setDishes([]);
+    }
+  }, [selectedRestaurant]);
 
   const handleOrder = () => {
-    console.log(`Nombre: ${name}, Opción 1: ${dropdown1}, Opción 2: ${dropdown2}`);
+    if (!name || !selectedRestaurant || !selectedDish) {
+      alert('Por favor, rellena todos los campos antes de continuar.');
+      return;
+    }
+
+    const restaurant = restaurants.find(r => r.value === selectedRestaurant);
+    if (restaurant) {
+      router.push({
+        pathname: '/envios',
+        params: { time: restaurant.time.toString() }
+      });
+    }
   };
 
   return (
     <View style={styles.screen}> {/* Usando el estilo de fondo */}
-      <Image source={require("../../assets/images/rocketlogo.png")} style={styles.logo} /> {/* Añadido el logo */}
+      <Image source={require('../../assets/images/rocketlogo.png')} style={styles.logo} /> {/* Añadido el logo */}
       <View style={styles.formContainer}>
         <Text style={styles.label}>Nombre:</Text>
         <TextInput
@@ -23,53 +96,48 @@ export default function HomeScreen() {
           onChangeText={setName}
         />
 
-        <Text style={styles.label}>Desplegable 1:</Text>
+        <Text style={styles.label}>Restaurante:</Text>
         <RNPickerSelect
-          onValueChange={(value) => setDropdown1(value)}
-          items={[
-            { label: 'Opción 1', value: 'opcion1' },
-            { label: 'Opción 2', value: 'opcion2' },
-          ]}
+          onValueChange={(value) => setSelectedRestaurant(value)}
+          items={restaurants}
           style={pickerStyles}
         />
 
-        <Text style={styles.label}>Desplegable 2:</Text>
+        <Text style={styles.label}>Plato:</Text>
         <RNPickerSelect
-          onValueChange={(value) => setDropdown2(value)}
-          items={[
-            { label: 'Opción A', value: 'opcionA' },
-            { label: 'Opción B', value: 'opcionB' },
-          ]}
+          onValueChange={(value) => setSelectedDish(value)}
+          items={dishes}
           style={pickerStyles}
         />
 
         <View style={styles.buttonContainer}>
-          <Button title="Pedir" onPress={handleOrder} />
+          <Button title="Comprar" onPress={handleOrder} />
         </View>
       </View>
     </View>
-  );}
+  );
+}
 
 const pickerStyles = {
   inputIOS: {
-    height: 55, // Incrementado para evitar cortes verticales
+    height: 55,
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 20,
-    paddingHorizontal: 30, // Incrementado para evitar cortes horizontales
+    paddingHorizontal: 30,
     color: '#333',
-    fontSize: 10, // Reducido para adaptarse mejor
+    fontSize: 10,
   },
   inputAndroid: {
-    height: 55, // Incrementado para evitar cortes verticales
+    height: 55,
     borderColor: '#ccc',
     borderWidth: 1,
     borderRadius: 5,
     marginBottom: 20,
-    paddingHorizontal: 30, // Incrementado para evitar cortes horizontales
+    paddingHorizontal: 30,
     color: '#333',
-    fontSize: 10, // Reducido para adaptarse mejor
+    fontSize: 10,
   },
 };
 
@@ -88,10 +156,10 @@ const styles = StyleSheet.create({
   },
   formContainer: {
     width: '100%',
-    flex: 1, // Permitir que el contenedor ocupe más espacio vertical
-    justifyContent: 'space-evenly', // Distribuir los elementos uniformemente
+    flex: 1,
+    justifyContent: 'space-evenly',
     alignItems: 'center',
-    paddingVertical: 20, // Añadir espacio interno
+    paddingVertical: 20,
   },
   label: {
     fontSize: 16,
